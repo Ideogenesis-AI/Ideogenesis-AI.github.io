@@ -1,0 +1,193 @@
+# --------------------------------------------------------- #
+# .gitignore for Ideogenesis-AI.github.io                   #
+# --------------------------------------------------------- #
+
+# --------------------------------------------------------- #
+# .gitignore for Cursor and VS Code Editors                 #
+# --------------------------------------------------------- #
+
+.cursor/
+.cursorignore
+.cursorindexingignore
+
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+!*.code-workspace
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+# --------------------------------------------------------- #
+# .gitignore for Node.js                                    #
+# --------------------------------------------------------- #
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+*.lcov
+.nyc_output/
+lib-cov/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+bower_components/
+
+# Build caches
+.npm/
+.eslintcache
+.stylelintcache
+.cache/
+.parcel-cache/
+.grunt/
+.fusebox/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Package output
+*.tgz
+.yarn-integrity
+
+# Framework build outputs
+.next/
+out/
+.nuxt/
+.output/
+.svelte-kit/
+.docusaurus/
+.serverless/
+.dynamodb/
+.firebase/
+.vuepress/dist
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+.vite/
+
+# Misc
+.lock-wscript
+.node_repl_history
+.tern-port
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnpm-store/
+
+# --------------------------------------------------------- #
+# .gitignore for Astro                                      #
+# --------------------------------------------------------- #
+
+dist/
+.astro/
+
+# --------------------------------------------------------- #
+# .gitignore for Windows                                    #
+# --------------------------------------------------------- #
+
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# --------------------------------------------------------- #
+# .gitignore for macOS                                      #
+# --------------------------------------------------------- #
+
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon[
+]
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# --------------------------------------------------------- #
+# .gitignore for Linux                                      #
+# --------------------------------------------------------- #
+
+*~
+
+# Temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# Metadata left by Dolphin file manager, which comes with KDE Plasma
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+# Log files created by default by the nohup command
+nohup.out
