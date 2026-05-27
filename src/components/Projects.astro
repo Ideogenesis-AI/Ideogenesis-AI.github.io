@@ -1,0 +1,296 @@
+---
+const projects = [
+  {
+    name: 'Nicole',
+    subtitle: 'Tensor Library',
+    description:
+      'A symmetry-aware tensor library for many-body quantum systems. Implements SU(2)-invariant tensor objects that preserve quantum numbers exactly during contractions.',
+    lang: 'Python',
+    stars: 11,
+    href: 'https://github.com/Ideogenesis-AI/Nicole',
+    docs: 'https://ideogenesis-ai.github.io/Nicole',
+    tags: ['Tensor Networks', 'SU(2)', 'Many-Body'],
+  },
+  {
+    name: 'Alice',
+    subtitle: 'TN Algorithms',
+    description:
+      'A collection of 1D tensor network algorithms built upon Nicole. Includes DMRG, MPS, and MPO methods for ground state computation and time evolution.',
+    lang: 'Python',
+    stars: 3,
+    href: 'https://github.com/Ideogenesis-AI/Alice',
+    docs: 'https://ideogenesis-ai.github.io/Alice',
+    tags: ['DMRG', 'MPS', 'MPO'],
+  },
+  {
+    name: 'Yuzuha',
+    subtitle: 'CG Engine',
+    description:
+      'SU(2) recoupling engine for tensor network algorithms. Computes Clebsch–Gordan coefficients and Wigner symbols needed for symmetric tensor contractions.',
+    lang: 'Python',
+    stars: 1,
+    href: 'https://github.com/Ideogenesis-AI/Yuzuha',
+    docs: 'https://ideogenesis-ai.github.io/Yuzuha',
+    tags: ['SU(2)', 'Clebsch–Gordan', 'Wigner'],
+  },
+];
+---
+
+<section class="projects" id="projects">
+  <div class="container">
+    <div class="projects__header reveal">
+      <div class="section-label">Open Source</div>
+      <h2 class="section-heading">Tensor Network Simulations</h2>
+      <p class="projects__intro">
+        The technology stack is entirely open source. Together, our projects cover the ground from symmetry bookkeeping to quantum simulation algorithms.
+      </p>
+    </div>
+
+    <ul class="projects__grid reveal-stagger">
+      {projects.map((p) => (
+        <li>
+          <div class="project-card" aria-label={`${p.name}: ${p.description}`}>
+            <div class="project-card__top">
+              <div class="project-card__identity">
+                <span class="project-card__name">{p.name}</span>
+                <span class="project-card__subtitle">{p.subtitle}</span>
+              </div>
+              <div class="project-card__meta">
+                <span class="project-card__stars" aria-label={`${p.stars} stars`}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                  {p.stars}
+                </span>
+                <span class="project-card__lang">{p.lang}</span>
+              </div>
+            </div>
+
+            <p class="project-card__desc">{p.description}</p>
+
+            <div class="project-card__tags">
+              {p.tags.map((t) => <span class="tag">{t}</span>)}
+            </div>
+
+            <div class="project-card__footer">
+              <a href={p.href} class="project-card__cta" target="_blank" rel="noopener noreferrer">View Repository ↗</a>
+              <a href={p.docs} class="project-card__cta project-card__cta--docs" target="_blank" rel="noopener noreferrer">View Documentation ↗</a>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div class="projects__more reveal">
+      <p>More repositories — including the private Ideogenesis Framework — live on the organization page.</p>
+      <a
+        href="https://github.com/Ideogenesis-AI"
+        class="btn-outline"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+        Browse all repositories
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects {
+    background: var(--bg-alt);
+    padding-block: var(--space-10);
+  }
+
+  .projects__header {
+    max-width: 560px;
+    margin-bottom: var(--space-9);
+  }
+
+  .projects__intro {
+    font-size: clamp(0.9375rem, 1.5vw, 1.05rem);
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-top: var(--space-4);
+  }
+
+  /* Card grid */
+  .projects__grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    margin-bottom: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .projects__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-5) var(--space-4);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    height: 100%;
+    transition:
+      border-color 0.25s var(--ease-out),
+      background   0.25s var(--ease-out),
+      transform    0.25s var(--ease-out);
+  }
+
+  .project-card:hover {
+    border-color: var(--accent-blue);
+    background: var(--bg-surface-hover);
+    transform: translateY(-3px);
+  }
+
+  .project-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .project-card__identity {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .project-card__name {
+    font-family: var(--font-mono);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .project-card__subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent-cyan);
+  }
+
+  .project-card__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .project-card__stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .project-card__lang {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+
+  .project-card__desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .project-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tag {
+    padding: 3px var(--space-3);
+    background: rgba(61, 142, 248, 0.07);
+    border: 1px solid rgba(61, 142, 248, 0.15);
+    border-radius: 100px;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--accent-blue);
+    letter-spacing: 0.03em;
+    font-family: var(--font-mono);
+  }
+
+  .project-card__footer {
+    display: flex;
+    gap: var(--space-5);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .project-card__cta {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .project-card__cta:hover {
+    color: var(--accent-blue);
+  }
+
+  .project-card__cta--docs:hover {
+    color: var(--accent-cyan);
+  }
+
+  .project-card:hover .project-card__cta {
+    color: var(--accent-blue);
+  }
+
+  /* "Browse all" section */
+  .projects__more {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    text-align: center;
+    padding-top: var(--space-4);
+  }
+
+  .projects__more p {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    max-width: 400px;
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.6875rem 1.25rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+    min-height: 44px;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    background: rgba(61, 142, 248, 0.05);
+  }
+</style>

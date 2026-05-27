@@ -1,0 +1,214 @@
+---
+---
+
+<section class="mission" id="mission">
+  <div class="container mission__inner">
+    <div class="mission__text">
+      <div class="section-label reveal">About</div>
+      <h2 class="section-heading reveal">
+        A New Paradigm for Physical Research
+      </h2>
+      <div class="mission__body reveal">
+        <p>
+          Ideogenesis AI is a research organization dedicated to bridging the gap between
+          traditional theoretical physics and modern AI capabilities. We believe that breakthrough
+          discoveries emerge not only from derivations, but also from observations — direct
+          patterns and correlations extracted from numerical or experimental simulations.
+        </p>
+        <p>
+          Our work centers on strongly correlated quantum many-body systems. We build the
+          computational infrastructure — tensor network libraries, symmetry engines, and simulation
+          algorithms — that produces the high-quality data our AI framework learns from.
+        </p>
+
+      </div>
+    </div>
+
+    <aside class="mission__aside reveal">
+      <blockquote class="mission__quote">
+        <p>
+          "From observations, not derivations — we let the data reveal what theory cannot yet see."
+        </p>
+        <footer>
+          <cite>Ideogenesis AI · Research Manifesto</cite>
+        </footer>
+      </blockquote>
+
+      <div class="mission__pillars">
+        <div class="pillar">
+          <span class="pillar__icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+            </svg>
+          </span>
+          <div>
+            <strong>Simulation-First</strong>
+            <p>Quantum lattice data as ground truth</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar__icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/>
+            </svg>
+          </span>
+          <div>
+            <strong>Symmetry-Aware</strong>
+            <p>SU(2) invariant tensors throughout</p>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="pillar__icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+            </svg>
+          </span>
+          <div>
+            <strong>Observation-Based</strong>
+            <p>Insights from what the data shows, not what theory predicts</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .mission {
+    background: var(--bg-base);
+    padding-block: var(--space-10);
+  }
+
+  .mission__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-9);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .mission__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-10);
+    }
+  }
+
+  /* Section meta-label */
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-cyan);
+    margin-bottom: var(--space-4);
+  }
+
+  .section-heading {
+    font-size: clamp(1.875rem, 4vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    color: var(--text-primary);
+    margin-bottom: var(--space-6);
+  }
+
+  .mission__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .mission__body p {
+    font-size: clamp(0.9375rem, 1.5vw, 1.05rem);
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  /* Quote block */
+  .mission__aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+    padding-top: 0;
+  }
+
+  @media (min-width: 900px) {
+    .mission__aside {
+      padding-top: calc(var(--space-4) + 1.5em); /* align with text below h2 */
+    }
+  }
+
+  .mission__quote {
+    border-left: 2px solid var(--accent-cyan);
+    padding-left: var(--space-5);
+    margin: 0;
+  }
+
+  .mission__quote p {
+    font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+  }
+
+  .mission__quote footer {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .mission__quote cite {
+    font-style: normal;
+    font-family: var(--font-mono);
+  }
+
+  /* Pillars */
+  .mission__pillars {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .pillar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .pillar:hover {
+    border-color: rgba(61, 142, 248, 0.3);
+  }
+
+  .pillar__icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 212, 255, 0.08);
+    border-radius: 8px;
+    color: var(--accent-cyan);
+    margin-top: 1px;
+  }
+
+  .pillar strong {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .pillar p {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+</style>

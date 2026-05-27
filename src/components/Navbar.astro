@@ -1,0 +1,329 @@
+---
+---
+
+<header class="navbar" id="navbar">
+  <div class="container navbar__inner">
+    <a href="/" class="navbar__logo" aria-label="Ideogenesis AI home">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <!-- Hexagonal lattice icon -->
+        <polygon points="14,2 24,7.5 24,18.5 14,24 4,18.5 4,7.5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="13" r="2" fill="currentColor"/>
+        <line x1="14" y1="2"  x2="14" y2="11" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="24" y1="7.5"  x2="16.7" y2="11.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="24" y1="18.5" x2="16.7" y2="14.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="14" y1="24"  x2="14" y2="15" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="4"  y1="18.5" x2="11.3" y2="14.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="4"  y1="7.5"  x2="11.3" y2="11.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+      </svg>
+      <span class="navbar__wordmark">Ideogenesis<span class="navbar__wordmark-ai"> AI</span></span>
+    </a>
+
+    <nav class="navbar__nav" aria-label="Main navigation">
+      <a href="#mission"  class="navbar__link">Mission</a>
+      <a href="#pipeline" class="navbar__link">Stack</a>
+      <a href="#research" class="navbar__link">Research</a>
+      <a href="#projects" class="navbar__link">Projects</a>
+    </nav>
+
+    <a
+      href="https://github.com/Ideogenesis-AI"
+      class="navbar__github"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="GitHub organization"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+
+    <button
+      class="navbar__hamburger"
+      id="hamburger"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="hamburger__bar"></span>
+      <span class="hamburger__bar"></span>
+      <span class="hamburger__bar"></span>
+    </button>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="navbar__drawer" id="mobile-menu" aria-hidden="true">
+    <nav class="navbar__drawer-nav" aria-label="Mobile navigation">
+      <a href="#mission"  class="drawer__link">Mission</a>
+      <a href="#pipeline" class="drawer__link">Stack</a>
+      <a href="#research" class="drawer__link">Research</a>
+      <a href="#projects" class="drawer__link">Projects</a>
+      <a
+        href="https://github.com/Ideogenesis-AI"
+        class="drawer__link drawer__link--github"
+        target="_blank"
+        rel="noopener noreferrer"
+      >GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: var(--nav-h);
+    background: rgba(7, 11, 21, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  }
+
+  .navbar.scrolled {
+    background: rgba(7, 11, 21, 0.92);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .navbar__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  /* Logo */
+  .navbar__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+
+  .navbar__logo svg {
+    color: var(--accent-cyan);
+    flex-shrink: 0;
+  }
+
+  .navbar__wordmark {
+    font-family: var(--font-sans);
+  }
+
+  .navbar__wordmark-ai {
+    color: var(--accent-cyan);
+    font-weight: 700;
+  }
+
+  /* Desktop nav links */
+  .navbar__nav {
+    display: none;
+    align-items: center;
+    gap: var(--space-6);
+    margin-left: auto;
+  }
+
+  @media (min-width: 768px) {
+    .navbar__nav {
+      display: flex;
+    }
+  }
+
+  .navbar__link {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: color 0.2s;
+    padding-block: var(--space-2);
+  }
+
+  .navbar__link:hover,
+  .navbar__link.active {
+    color: var(--text-primary);
+  }
+
+  /* GitHub CTA button */
+  .navbar__github {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 768px) {
+    .navbar__github {
+      display: flex;
+    }
+  }
+
+  .navbar__github:hover {
+    border-color: var(--accent-blue);
+    color: var(--text-primary);
+    background: rgba(61, 142, 248, 0.06);
+  }
+
+  /* Hamburger */
+  .navbar__hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-2);
+    margin-left: auto;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+
+  @media (min-width: 768px) {
+    .navbar__hamburger {
+      display: none;
+    }
+  }
+
+  .navbar__hamburger:hover {
+    background: var(--border-subtle);
+  }
+
+  .hamburger__bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: transform 0.3s var(--ease-out), opacity 0.3s;
+  }
+
+  /* Hamburger open state */
+  .navbar__hamburger[aria-expanded="true"] .hamburger__bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .navbar__hamburger[aria-expanded="true"] .hamburger__bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .navbar__hamburger[aria-expanded="true"] .hamburger__bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile drawer */
+  .navbar__drawer {
+    background: rgba(10, 16, 32, 0.98);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.35s var(--ease-out);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .navbar__drawer.open {
+    max-height: 360px;
+  }
+
+  .navbar__drawer-nav {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4) var(--space-5);
+    gap: var(--space-1);
+  }
+
+  .drawer__link {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 500;
+    padding-block: var(--space-3);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: color 0.2s;
+  }
+
+  .drawer__link:last-child {
+    border-bottom: none;
+  }
+
+  .drawer__link:hover {
+    color: var(--text-primary);
+  }
+
+  .drawer__link--github {
+    color: var(--accent-blue);
+    margin-top: var(--space-2);
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const hamburger = document.getElementById('hamburger');
+    const drawer    = document.getElementById('mobile-menu');
+    const navbar    = document.getElementById('navbar');
+
+    if (hamburger && drawer) {
+      hamburger.addEventListener('click', function () {
+        const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', String(!isOpen));
+        drawer.setAttribute('aria-hidden', String(isOpen));
+        drawer.classList.toggle('open', !isOpen);
+      });
+
+      // Close drawer when a link is tapped
+      drawer.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          hamburger.setAttribute('aria-expanded', 'false');
+          drawer.setAttribute('aria-hidden', 'true');
+          drawer.classList.remove('open');
+        });
+      });
+    }
+
+    // Scroll-aware style
+    if (navbar) {
+      window.addEventListener('scroll', function () {
+        navbar.classList.toggle('scrolled', window.scrollY > 20);
+      }, { passive: true });
+    }
+
+    // Active link highlighting
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.navbar__link');
+
+    if (sections.length && navLinks.length) {
+      const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            navLinks.forEach(function (link) {
+              link.classList.toggle(
+                'active',
+                link.getAttribute('href') === '#' + entry.target.id
+              );
+            });
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px' });
+
+      sections.forEach(function (s) { io.observe(s); });
+    }
+  })();
+</script>
