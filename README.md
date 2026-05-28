@@ -12,7 +12,7 @@ This repository contains the source for the Ideogenesis AI organization website.
 - Vanilla CSS with custom properties — no framework overhead
 - Canvas API — animated quantum lattice background
 - Self-hosted fonts via [`@fontsource`](https://fontsource.org)
-- Deployed via GitHub Actions to GitHub Pages
+- Deployed manually via [`gh-pages`](https://github.com/tschaub/gh-pages) to GitHub Pages
 
 ## Development
 
@@ -21,7 +21,13 @@ npm install
 npm run dev       # local dev server at http://localhost:4321
 npm run build     # production build → dist/
 npm run preview   # preview production build locally
+npm run deploy    # build and publish to GitHub Pages (gh-pages branch)
 ```
+
+> `npm run deploy` uses `gh-pages --dotfiles` to ensure dotfiles such as
+> `.nojekyll` and `CNAME` are included in the push. GitHub Pages runs Jekyll
+> by default, which silently strips directories beginning with `_` (including
+> Astro's `_astro/` asset bundle) unless `.nojekyll` is present.
 
 ## License
 
