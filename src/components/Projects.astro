@@ -100,17 +100,44 @@ const projects = [
 
 <script is:inline>
   (function () {
+    var CACHE_TTL = 60 * 60 * 1000; // 1 hour
+
+    function getCached(repo) {
+      try {
+        var raw = localStorage.getItem('gh_stars_' + repo);
+        if (!raw) return null;
+        var entry = JSON.parse(raw);
+        if (Date.now() - entry.ts > CACHE_TTL) return null;
+        return entry.count;
+      } catch { return null; }
+    }
+
+    function setCached(repo, count) {
+      try {
+        localStorage.setItem('gh_stars_' + repo, JSON.stringify({ count: count, ts: Date.now() }));
+      } catch {}
+    }
+
     var els = document.querySelectorAll('[data-github-repo]');
     els.forEach(function (el) {
       var repo = el.getAttribute('data-github-repo');
       var countEl = el.querySelector('.stars__count');
       if (!repo || !countEl) return;
+
+      var cached = getCached(repo);
+      if (cached !== null) {
+        countEl.textContent = cached;
+        el.setAttribute('aria-label', cached + ' stars');
+        return;
+      }
+
       fetch('https://api.github.com/repos/' + repo)
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (data) {
           if (data && typeof data.stargazers_count === 'number') {
             countEl.textContent = data.stargazers_count;
             el.setAttribute('aria-label', data.stargazers_count + ' stars');
+            setCached(repo, data.stargazers_count);
           }
         })
         .catch(function () { /* keep placeholder */ });
