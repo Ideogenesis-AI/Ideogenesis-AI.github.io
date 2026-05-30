@@ -4,34 +4,34 @@ const projects = [
     name: 'Nicole',
     subtitle: 'Tensor Library',
     description:
-      'A symmetry-aware tensor library for many-body quantum systems. Implements SU(2)-invariant tensor objects that preserve quantum numbers exactly during contractions.',
+      'A symmetry-aware tensor library for many-body quantum systems. Implements block-sparse tensor objects that preserve quantum numbers during operations.',
     lang: 'Python',
-    stars: 11,
+    repo: 'Ideogenesis-AI/Nicole',
     href: 'https://github.com/Ideogenesis-AI/Nicole',
     docs: 'https://ideogenesis-ai.github.io/Nicole',
-    tags: ['Tensor Networks', 'SU(2)', 'Many-Body'],
+    tags: ['Symmetry-Aware', 'GPU / TPU / NPU', 'Autograd', 'ML / AI Ecosystem'],
   },
   {
     name: 'Alice',
     subtitle: 'TN Algorithms',
     description:
-      'A collection of 1D tensor network algorithms built upon Nicole. Includes DMRG, MPS, and MPO methods for ground state computation and time evolution.',
+      'A collection of 1D tensor network algorithms built upon Nicole. Includes DMRG, (upcoming XTRG, tanTRG, TDVP, TaSK etc.) and MPS / MPO infrastructure.',
     lang: 'Python',
-    stars: 3,
+    repo: 'Ideogenesis-AI/Alice',
     href: 'https://github.com/Ideogenesis-AI/Alice',
     docs: 'https://ideogenesis-ai.github.io/Alice',
-    tags: ['DMRG', 'MPS', 'MPO'],
+    tags: ['Tensor Networks', '1D Algorithms', 'AutoMPS', 'AutoMPO'],
   },
   {
     name: 'Yuzuha',
     subtitle: 'CG Engine',
     description:
-      'SU(2) recoupling engine for tensor network algorithms. Computes Clebsch–Gordan coefficients and Wigner symbols needed for symmetric tensor contractions.',
+      'SU(2) recoupling engine for tensor network algorithms. Computes Clebsch–Gordan coefficients and Wigner symbols needed for symmetric tensor operations.',
     lang: 'Python',
-    stars: 1,
+    repo: 'Ideogenesis-AI/Yuzuha',
     href: 'https://github.com/Ideogenesis-AI/Yuzuha',
     docs: 'https://ideogenesis-ai.github.io/Yuzuha',
-    tags: ['SU(2)', 'Clebsch–Gordan', 'Wigner'],
+    tags: ['SU(2)', 'Clebsch–Gordan', 'Wigner', 'Yuzuha Protocol'],
   },
 ];
 ---
@@ -42,7 +42,7 @@ const projects = [
       <div class="section-label">Open Source</div>
       <h2 class="section-heading">Tensor Network Simulations</h2>
       <p class="projects__intro">
-        The technology stack is entirely open source. Together, our projects cover the ground from symmetry bookkeeping to quantum simulation algorithms.
+        Each component embodies living, collaborative open-source efforts. Together, our projects cover the ground from symmetry bookkeeping to quantum simulation algorithms.
       </p>
     </div>
 
@@ -56,11 +56,11 @@ const projects = [
                 <span class="project-card__subtitle">{p.subtitle}</span>
               </div>
               <div class="project-card__meta">
-                <span class="project-card__stars" aria-label={`${p.stars} stars`}>
+                <span class="project-card__stars" aria-label="GitHub stars" data-github-repo={p.repo}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                   </svg>
-                  {p.stars}
+                  <span class="stars__count">—</span>
                 </span>
                 <span class="project-card__lang">{p.lang}</span>
               </div>
@@ -97,6 +97,26 @@ const projects = [
     </div>
   </div>
 </section>
+
+<script is:inline>
+  (function () {
+    var els = document.querySelectorAll('[data-github-repo]');
+    els.forEach(function (el) {
+      var repo = el.getAttribute('data-github-repo');
+      var countEl = el.querySelector('.stars__count');
+      if (!repo || !countEl) return;
+      fetch('https://api.github.com/repos/' + repo)
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (data && typeof data.stargazers_count === 'number') {
+            countEl.textContent = data.stargazers_count;
+            el.setAttribute('aria-label', data.stargazers_count + ' stars');
+          }
+        })
+        .catch(function () { /* keep placeholder */ });
+    });
+  })();
+</script>
 
 <style>
   .projects {
