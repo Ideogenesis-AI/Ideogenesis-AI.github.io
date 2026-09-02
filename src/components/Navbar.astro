@@ -4,17 +4,14 @@
 <header class="navbar" id="navbar">
   <div class="container navbar__inner">
     <a href="/" class="navbar__logo" aria-label="Ideogenesis AI home">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <!-- Hexagonal lattice icon -->
-        <polygon points="14,2 24,7.5 24,18.5 14,24 4,18.5 4,7.5" stroke="currentColor" stroke-width="1.5" fill="none"/>
-        <circle cx="14" cy="13" r="2" fill="currentColor"/>
-        <line x1="14" y1="2"  x2="14" y2="11" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-        <line x1="24" y1="7.5"  x2="16.7" y2="11.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-        <line x1="24" y1="18.5" x2="16.7" y2="14.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-        <line x1="14" y1="24"  x2="14" y2="15" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-        <line x1="4"  y1="18.5" x2="11.3" y2="14.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-        <line x1="4"  y1="7.5"  x2="11.3" y2="11.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-      </svg>
+      <img
+        src="/icon-dark-superellipse@3x.png"
+        alt=""
+        width="28"
+        height="28"
+        class="navbar__logo-mark"
+        aria-hidden="true"
+      />
       <span class="navbar__wordmark">Ideogenesis<span class="navbar__wordmark-ai"> AI</span></span>
     </a>
 
@@ -108,8 +105,10 @@
     text-decoration: none;
   }
 
-  .navbar__logo svg {
-    color: var(--accent-cyan);
+  .navbar__logo-mark {
+    width: 28px;
+    height: 28px;
+    display: block;
     flex-shrink: 0;
   }
 
@@ -118,7 +117,6 @@
   }
 
   .navbar__wordmark-ai {
-    color: var(--accent-cyan);
     font-weight: 700;
   }
 
