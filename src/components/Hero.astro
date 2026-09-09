@@ -127,22 +127,21 @@
     display: inline-block;
   }
 
-  /* Shimmer gradient text — cyan/blue sheen only (no white stop, which read
-     as a flicker), slowed so it feels like light moving rather than blinking */
+  /* Shimmer gradient text */
   .shimmer {
     background: linear-gradient(
       90deg,
       var(--accent-cyan) 0%,
-      var(--accent-blue) 40%,
-      #7fdcff 50%,
-      var(--accent-blue) 60%,
+      var(--accent-blue) 35%,
+      var(--text-primary) 50%,
+      var(--accent-blue) 65%,
       var(--accent-cyan) 100%
     );
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shimmer 7s linear infinite;
+    animation: shimmer 4s linear infinite;
   }
 
   /* Tagline */
