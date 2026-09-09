@@ -78,8 +78,8 @@
       ),
       radial-gradient(
         ellipse 100% 100% at 50% 50%,
-        rgba(7, 11, 21, 0.00) 70%,
-        rgba(7, 11, 21, 0.45) 100%
+        rgba(7, 11, 21, 0.00) 60%,
+        rgba(7, 11, 21, 0.70) 100%
       ),
       linear-gradient(to bottom, rgba(7, 11, 21, 0) 80%, var(--bg-base) 100%);
     pointer-events: none;
@@ -300,15 +300,17 @@
     var POINTER_GAIN   = 0.45;  // peak excitation added under the pointer
 
     // ── Radial emphasis ──────────────────────────────────────
-    // The centre sits behind the headline and is masked anyway; the outer
-    // area is where the lattice is actually seen. Sites get a gain that rises
-    // from 1 at the centre to OUTER_GAIN at the edge, applied to excitation
-    // and (more gently) to baseline brightness. Quench origins are biased
-    // outward too.
-    var RADIAL_INNER = 0.30;    // normalised radius where the ramp starts
-    var RADIAL_OUTER = 0.95;    // normalised radius where it reaches OUTER_GAIN
-    var OUTER_GAIN   = 2.4;     // excitation multiplier at the edge
-    var OUTER_BASE   = 0.9;     // baseline alpha boost at the edge (+90%)
+    // Far from the centre the lattice tends to look empty on wide screens.
+    // Sites beyond an ABSOLUTE pixel distance from the centre get a gain on
+    // excitation and baseline brightness, and quench origins are biased out
+    // there. Because the ramp is in pixels, small windows (< ~1200px wide)
+    // are essentially unaffected; at 1440×900 only the corners and the
+    // outermost columns are touched; on large monitors the wide margins get
+    // the full boost.
+    var RADIAL_START_PX = 620;  // distance from centre where the ramp starts
+    var RADIAL_FULL_PX  = 980;  // distance where it reaches OUTER_GAIN
+    var OUTER_GAIN      = 2.4;  // excitation multiplier at full distance
+    var OUTER_BASE      = 0.9;  // baseline alpha boost at full distance (+90%)
 
     // Colour endpoints (cyan → blue)
     var C0 = [0, 212, 255], C1 = [61, 142, 248];
@@ -376,11 +378,10 @@
       for (var r = 0; r < ROWS; r++) {
         for (var c = 0; c < COLS; c++) {
           var x = offX + c * SPACING, y = offY + r * SPACING;
-          // Normalised elliptical distance from centre: 0 at centre, 1 at the
-          // midpoint of an edge, ~1.4 at a corner
-          var nx = (x - cx) / cx, ny = (y - cy) / cy;
-          var dn = Math.sqrt(nx * nx + ny * ny);
-          var t = (dn - RADIAL_INNER) / (RADIAL_OUTER - RADIAL_INNER);
+          // Absolute pixel distance from the canvas centre
+          var dxp = x - cx, dyp = y - cy;
+          var dpx = Math.sqrt(dxp * dxp + dyp * dyp);
+          var t = (dpx - RADIAL_START_PX) / (RADIAL_FULL_PX - RADIAL_START_PX);
           t = t < 0 ? 0 : t > 1 ? 1 : t;
           t = t * t * (3 - 2 * t); // smoothstep
           var base = 0.22 + Math.random() * 0.10;
