@@ -78,8 +78,8 @@
       ),
       radial-gradient(
         ellipse 100% 100% at 50% 50%,
-        rgba(7, 11, 21, 0.00) 55%,
-        rgba(7, 11, 21, 0.85) 100%
+        rgba(7, 11, 21, 0.00) 70%,
+        rgba(7, 11, 21, 0.45) 100%
       ),
       linear-gradient(to bottom, rgba(7, 11, 21, 0) 80%, var(--bg-base) 100%);
     pointer-events: none;
@@ -299,10 +299,21 @@
     var POINTER_R      = POINTER_R_REF;
     var POINTER_GAIN   = 0.45;  // peak excitation added under the pointer
 
+    // ── Radial emphasis ──────────────────────────────────────
+    // The centre sits behind the headline and is masked anyway; the outer
+    // area is where the lattice is actually seen. Sites get a gain that rises
+    // from 1 at the centre to OUTER_GAIN at the edge, applied to excitation
+    // and (more gently) to baseline brightness. Quench origins are biased
+    // outward too.
+    var RADIAL_INNER = 0.30;    // normalised radius where the ramp starts
+    var RADIAL_OUTER = 0.95;    // normalised radius where it reaches OUTER_GAIN
+    var OUTER_GAIN   = 2.4;     // excitation multiplier at the edge
+    var OUTER_BASE   = 0.9;     // baseline alpha boost at the edge (+90%)
+
     // Colour endpoints (cyan → blue)
     var C0 = [0, 212, 255], C1 = [61, 142, 248];
 
-    var nodes = [];        // { x, y, col, row, base, emph }
+    var nodes = [];        // { x, y, col, row, base, emph, t, gain }
     var exc   = [];        // per-site excitation, 0..1
     var bonds = [];        // { a, b, phase, rate, isPhase, base }
     var fronts = [];       // { x, y, r, amp }
@@ -360,14 +371,25 @@
       ROWS = Math.max(1, Math.floor((h - MIN_PAD * 2) / SPACING) + 1);
       var offX = (w - (COLS - 1) * SPACING) / 2;
       var offY = (h - (ROWS - 1) * SPACING) / 2;
+      var cx = w / 2, cy = h / 2;
 
       for (var r = 0; r < ROWS; r++) {
         for (var c = 0; c < COLS; c++) {
+          var x = offX + c * SPACING, y = offY + r * SPACING;
+          // Normalised elliptical distance from centre: 0 at centre, 1 at the
+          // midpoint of an edge, ~1.4 at a corner
+          var nx = (x - cx) / cx, ny = (y - cy) / cy;
+          var dn = Math.sqrt(nx * nx + ny * ny);
+          var t = (dn - RADIAL_INNER) / (RADIAL_OUTER - RADIAL_INNER);
+          t = t < 0 ? 0 : t > 1 ? 1 : t;
+          t = t * t * (3 - 2 * t); // smoothstep
+          var base = 0.22 + Math.random() * 0.10;
           nodes.push({
-            x: offX + c * SPACING, y: offY + r * SPACING,
-            col: c, row: r,
-            base: 0.22 + Math.random() * 0.10,       // quiet baseline alpha
+            x: x, y: y, col: c, row: r,
+            base: base * (1 + OUTER_BASE * t),        // brighter baseline outward
             emph: Math.random() < 0.08,               // a few emphasised sites
+            t: t,
+            gain: 1 + (OUTER_GAIN - 1) * t,           // excitation multiplier
           });
           exc.push(0);
         }
@@ -383,19 +405,27 @@
 
     function addBond(a, b) {
       var isPhase = Math.random() < PHASE_FRACTION;
+      var t = (nodes[a].t + nodes[b].t) * 0.5;
+      var base = isPhase ? 0.16 : 0.07 + Math.random() * 0.04;
       bonds.push({
         a: a, b: b,
         isPhase: isPhase,
         phase: Math.random() * Math.PI * 2,
         rate: PHASE_RATE * (0.6 + Math.random() * 0.8),
-        base: isPhase ? 0.16 : 0.07 + Math.random() * 0.04,
+        base: base * (1 + OUTER_BASE * t),
+        gain: 1 + (OUTER_GAIN - 1) * t,
       });
     }
 
-    // Launch a correlation front from a random site (interior preferred)
+    // Launch a correlation front from a random site, biased toward the
+    // periphery (rejection sampling on the radial weight)
     function quench(t) {
       if (!nodes.length || fronts.length >= MAX_FRONTS) return;
       var idx = Math.floor(Math.random() * nodes.length);
+      for (var tries = 0; tries < 6; tries++) {
+        idx = Math.floor(Math.random() * nodes.length);
+        if (Math.random() < 0.25 + 0.75 * nodes[idx].t) break;
+      }
       var n = nodes[idx];
       fronts.push({ x: n.x, y: n.y, r: 0, amp: FRONT_PEAK });
       exc[idx] = FRONT_PEAK;
@@ -473,7 +503,8 @@
       for (var b = 0; b < bonds.length; b++) {
         var bd = bonds[b];
         var na = nodes[bd.a], nb = nodes[bd.b];
-        var e = (exc[bd.a] + exc[bd.b]) * 0.5;
+        var e = (exc[bd.a] + exc[bd.b]) * 0.5 * bd.gain;
+        if (e > 1) e = 1;
 
         var col, alpha, width;
         if (bd.isPhase) {
@@ -504,9 +535,10 @@
       // Site glows (only where excited). Two sprites blended by heat: hot
       // sites draw mostly cyan, cooling sites mostly blue.
       for (var gi = 0; gi < nodes.length; gi++) {
-        var gv = exc[gi];
-        if (gv < 0.12) continue;
         var nd = nodes[gi];
+        var gv = exc[gi] * nd.gain;
+        if (gv > 1) gv = 1;
+        if (gv < 0.12) continue;
         var gr = 10 + gv * 14;
         var hot = gv * 1.6; if (hot > 1) hot = 1;
         var a = gv * 0.22;
@@ -520,7 +552,8 @@
       // Sites
       for (var j = 0; j < nodes.length; j++) {
         var n2 = nodes[j];
-        var ev = exc[j];
+        var ev = exc[j] * n2.gain;
+        if (ev > 1) ev = 1;
         var radius = (n2.emph ? 2.0 : 1.5) + ev * 1.6;
         var alpha2 = Math.min(1, (n2.emph ? n2.base + 0.2 : n2.base) + ev * 0.6);
         ctx.beginPath(); ctx.arc(n2.x, n2.y, radius, 0, Math.PI * 2);
