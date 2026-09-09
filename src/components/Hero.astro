@@ -58,7 +58,7 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.7;
+    opacity: 0.42;
     pointer-events: none;
   }
 
@@ -272,21 +272,22 @@
     var COLS = 0, ROWS = 0;
 
     // ── Correlation-front ("quench") dynamics ────────────────
-    var FRONT_SPEED   = 0.15;   // px per ms
-    var FRONT_WIDTH   = 64;     // gaussian sigma of the front, px
-    var FRONT_R0      = 520;    // amplitude falls off as 1 / (1 + r / R0)
-    var MAX_FRONTS    = 3;
-    var QUENCH_MIN    = 1800;   // ms between quenches (min)
-    var QUENCH_RANGE  = 1800;   // + random up to this
-    var DECAY_TAU     = 1500;   // afterglow decay time constant, ms
+    var FRONT_SPEED   = 0.13;   // px per ms
+    var FRONT_WIDTH   = 56;     // gaussian sigma of the front, px
+    var FRONT_R0      = 300;    // amplitude falls off as 1 / (1 + r / R0)
+    var FRONT_PEAK    = 0.6;    // excitation at the front's origin (0..1)
+    var MAX_FRONTS    = 2;
+    var QUENCH_MIN    = 3200;   // ms between quenches (min)
+    var QUENCH_RANGE  = 2600;   // + random up to this
+    var DECAY_TAU     = 1300;   // afterglow decay time constant, ms
 
     // ── Phase layer ──────────────────────────────────────────
-    var PHASE_FRACTION = 0.16;  // share of bonds carrying a rotating phase
-    var PHASE_RATE     = 0.00045; // rad per ms
+    var PHASE_FRACTION = 0.12;  // share of bonds carrying a rotating phase
+    var PHASE_RATE     = 0.00040; // rad per ms
 
     // ── Pointer coupling ─────────────────────────────────────
-    var POINTER_R      = 180;   // influence radius, px
-    var POINTER_GAIN   = 0.85;  // peak excitation added under the pointer
+    var POINTER_R      = 160;   // influence radius, px
+    var POINTER_GAIN   = 0.45;  // peak excitation added under the pointer
 
     // Colour endpoints (cyan → blue)
     var C0 = [0, 212, 255], C1 = [61, 142, 248];
@@ -376,8 +377,8 @@
       if (!nodes.length || fronts.length >= MAX_FRONTS) return;
       var idx = Math.floor(Math.random() * nodes.length);
       var n = nodes[idx];
-      fronts.push({ x: n.x, y: n.y, r: 0, amp: 1 });
-      exc[idx] = 1;
+      fronts.push({ x: n.x, y: n.y, r: 0, amp: FRONT_PEAK });
+      exc[idx] = FRONT_PEAK;
     }
 
     // ── Simulation step ──────────────────────────────────────
@@ -394,7 +395,7 @@
       for (var f = fronts.length - 1; f >= 0; f--) {
         var fr = fronts[f];
         fr.r += FRONT_SPEED * dt;
-        fr.amp = 1 / (1 + fr.r / FRONT_R0);
+        fr.amp = FRONT_PEAK / (1 + fr.r / FRONT_R0);
         if (fr.r > maxR) fronts.splice(f, 1);
       }
 
@@ -458,12 +459,12 @@
         if (bd.isPhase) {
           var tt = 0.5 + 0.5 * Math.sin(bd.phase);
           col = e > 0.25 ? heat(e) : lerpColor(tt);
-          alpha = bd.base + e * 0.75;
-          width = 0.9 + e * 1.6;
+          alpha = bd.base + e * 0.5;
+          width = 0.8 + e * 1.0;
         } else {
           col = e > 0.05 ? heat(e) : '0,212,255';
-          alpha = bd.base + e * 0.85;
-          width = 0.6 + e * 1.8;
+          alpha = bd.base + e * 0.55;
+          width = 0.6 + e * 1.1;
         }
 
         ctx.lineWidth = width;
@@ -475,8 +476,8 @@
       for (var f = 0; f < fronts.length; f++) {
         var fr = fronts[f];
         if (fr.r < 8) continue;
-        ctx.lineWidth = 1.2;
-        ctx.strokeStyle = 'rgba(0,212,255,' + (0.18 * fr.amp) + ')';
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(0,212,255,' + (0.14 * fr.amp) + ')';
         ctx.beginPath(); ctx.arc(fr.x, fr.y, fr.r, 0, Math.PI * 2); ctx.stroke();
       }
 
@@ -484,11 +485,11 @@
       // sites draw mostly cyan, cooling sites mostly blue.
       for (var gi = 0; gi < nodes.length; gi++) {
         var gv = exc[gi];
-        if (gv < 0.10) continue;
+        if (gv < 0.12) continue;
         var nd = nodes[gi];
-        var gr = 12 + gv * 18;
+        var gr = 10 + gv * 14;
         var hot = gv * 1.6; if (hot > 1) hot = 1;
-        var a = gv * 0.34;
+        var a = gv * 0.22;
         ctx.globalAlpha = a * hot;
         ctx.drawImage(glowCyan, nd.x - gr, nd.y - gr, gr * 2, gr * 2);
         ctx.globalAlpha = a * (1 - hot);
@@ -500,8 +501,8 @@
       for (var j = 0; j < nodes.length; j++) {
         var n2 = nodes[j];
         var ev = exc[j];
-        var radius = (n2.emph ? 2.1 : 1.5) + ev * 2.4;
-        var alpha2 = Math.min(1, (n2.emph ? n2.base + 0.25 : n2.base) + ev * 0.8);
+        var radius = (n2.emph ? 2.0 : 1.5) + ev * 1.6;
+        var alpha2 = Math.min(1, (n2.emph ? n2.base + 0.2 : n2.base) + ev * 0.6);
         ctx.beginPath(); ctx.arc(n2.x, n2.y, radius, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(' + (ev > 0.05 ? heat(ev) : '0,212,255') + ',' + alpha2 + ')'; ctx.fill();
       }
