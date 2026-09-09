@@ -272,21 +272,31 @@
     var COLS = 0, ROWS = 0;
 
     // ── Correlation-front ("quench") dynamics ────────────────
+    // The *_REF values are tuned for a 1440x900 canvas. Because the lattice
+    // spacing is fixed, a larger window has more area; to keep the perceived
+    // density of illumination the same, the quench rate and front count are
+    // scaled with canvas area and the front reach with canvas diagonal.
+    // The live values (without _REF) are derived in buildLattice().
+    var REF_W = 1440, REF_H = 900;
     var FRONT_SPEED   = 0.13;   // px per ms
     var FRONT_WIDTH   = 56;     // gaussian sigma of the front, px
-    var FRONT_R0      = 300;    // amplitude falls off as 1 / (1 + r / R0)
+    var FRONT_R0_REF  = 300;    // amplitude falls off as 1 / (1 + r / R0)
     var FRONT_PEAK    = 0.6;    // excitation at the front's origin (0..1)
-    var MAX_FRONTS    = 2;
-    var QUENCH_MIN    = 3200;   // ms between quenches (min)
-    var QUENCH_RANGE  = 2600;   // + random up to this
+    var MAX_FRONTS_REF   = 2;
+    var QUENCH_MIN_REF   = 3200; // ms between quenches (min)
+    var QUENCH_RANGE_REF = 2600; // + random up to this
     var DECAY_TAU     = 1300;   // afterglow decay time constant, ms
+
+    var FRONT_R0 = FRONT_R0_REF, MAX_FRONTS = MAX_FRONTS_REF;
+    var QUENCH_MIN = QUENCH_MIN_REF, QUENCH_RANGE = QUENCH_RANGE_REF;
 
     // ── Phase layer ──────────────────────────────────────────
     var PHASE_FRACTION = 0.12;  // share of bonds carrying a rotating phase
     var PHASE_RATE     = 0.00040; // rad per ms
 
     // ── Pointer coupling ─────────────────────────────────────
-    var POINTER_R      = 160;   // influence radius, px
+    var POINTER_R_REF  = 160;   // influence radius, px (scaled with diagonal)
+    var POINTER_R      = POINTER_R_REF;
     var POINTER_GAIN   = 0.45;  // peak excitation added under the pointer
 
     // Colour endpoints (cyan → blue)
@@ -336,6 +346,16 @@
 
     function buildLattice(w, h) {
       nodes = []; exc = []; bonds = []; fronts = [];
+
+      // Scale dynamics to canvas size (see note above the constants)
+      var areaScale = Math.min(3, Math.max(0.5, (w * h) / (REF_W * REF_H)));
+      var diagScale = Math.sqrt(w * w + h * h) / Math.sqrt(REF_W * REF_W + REF_H * REF_H);
+      QUENCH_MIN   = QUENCH_MIN_REF   / areaScale;
+      QUENCH_RANGE = QUENCH_RANGE_REF / areaScale;
+      MAX_FRONTS   = Math.max(2, Math.round(MAX_FRONTS_REF * areaScale));
+      FRONT_R0     = FRONT_R0_REF  * diagScale;
+      POINTER_R    = POINTER_R_REF * diagScale;
+
       COLS = Math.max(1, Math.floor((w - MIN_PAD * 2) / SPACING) + 1);
       ROWS = Math.max(1, Math.floor((h - MIN_PAD * 2) / SPACING) + 1);
       var offX = (w - (COLS - 1) * SPACING) / 2;
