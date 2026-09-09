@@ -8,10 +8,13 @@
   --bg-surface: #0d1526;
   --bg-surface-hover: #111d35;
 
-  /* Text */
+  /* Text — contrast against --bg-base / --bg-surface
+     primary ≈ 15:1, muted ≈ 7:1 (body copy), subtle ≈ 4.6:1 (labels),
+     faint ≈ 3.2:1 (non-essential meta only) */
   --text-primary: #dde4f0;
-  --text-muted:   #5a6a88;
-  --text-faint:   #3a4a62;
+  --text-muted:   #8d9cb8;
+  --text-subtle:  #6b7a96;
+  --text-faint:   #566683;
 
   /* Accents — strict roles */
   --accent-cyan:   #00d4ff;   /* CTAs, active states, data-flow dot */
@@ -20,7 +23,22 @@
 
   /* Borders */
   --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-card:   rgba(61, 142, 248, 0.0);
+  --border-strong: rgba(255, 255, 255, 0.10);
+  --border-blue:   rgba(61, 142, 248, 0.45);
+  --border-purple: rgba(139, 92, 246, 0.25);
+  --border-purple-hover: rgba(139, 92, 246, 0.55);
+
+  /* Radii */
+  --radius-sm:   8px;    /* buttons, icon tiles, small chips */
+  --radius-md:   10px;   /* pillars, compact cards */
+  --radius-lg:   14px;   /* feature cards */
+  --radius-pill: 999px;
+
+  /* Card padding */
+  --card-pad: var(--space-5);
+
+  /* Focus ring */
+  --focus-ring: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--accent-cyan);
 
   /* Spacing scale */
   --space-1:  4px;
@@ -86,12 +104,60 @@ a:hover {
   color: var(--accent-cyan);
 }
 
+/* Keyboard focus — visible ring on dark surfaces, mouse clicks unaffected */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
 /* ============================================================
    SECTION SCROLL ANCHORS — compensate for sticky navbar
    ============================================================ */
 section[id],
 div[id].scroll-target {
   scroll-margin-top: var(--nav-h);
+}
+
+/* ============================================================
+   SHARED SECTION HEADER — used by Mission, Pipeline, Research, Projects
+   ============================================================ */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  margin-bottom: var(--space-4);
+}
+
+.section-label--purple {
+  color: var(--accent-purple);
+}
+
+.section-heading {
+  font-size: clamp(1.875rem, 4vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.section-intro {
+  font-size: clamp(0.9375rem, 1.5vw, 1.05rem);
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-top: var(--space-4);
+}
+
+.section-header {
+  max-width: 600px;
+  margin-bottom: var(--space-8);
 }
 
 /* ============================================================
@@ -160,19 +226,20 @@ div[id].scroll-target {
   }
 }
 
-/* Reveal wrapper — set by JS when IntersectionObserver fires */
-.reveal {
+/* Reveal wrapper — set by JS when IntersectionObserver fires.
+   Gated on html.js so content stays visible when scripts don't run. */
+.js .reveal {
   opacity: 0;
 }
-.reveal.visible {
+.js .reveal.visible {
   animation: reveal-up 0.6s var(--ease-out) forwards;
 }
 
 /* Stagger children */
-.reveal-stagger > * {
+.js .reveal-stagger > * {
   opacity: 0;
 }
-.reveal-stagger.visible > * {
+.js .reveal-stagger.visible > * {
   animation: reveal-up 0.5s var(--ease-out) both;
 }
 .reveal-stagger.visible > *:nth-child(1) { animation-delay: 0ms;   }
@@ -181,6 +248,8 @@ div[id].scroll-target {
 .reveal-stagger.visible > *:nth-child(4) { animation-delay: 240ms; }
 .reveal-stagger.visible > *:nth-child(5) { animation-delay: 320ms; }
 .reveal-stagger.visible > *:nth-child(6) { animation-delay: 400ms; }
+.reveal-stagger.visible > *:nth-child(7) { animation-delay: 480ms; }
+.reveal-stagger.visible > *:nth-child(8) { animation-delay: 560ms; }
 
 /* ============================================================
    REDUCED MOTION — disable all animations

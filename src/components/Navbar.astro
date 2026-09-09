@@ -48,8 +48,8 @@
     </button>
   </div>
 
-  <!-- Mobile drawer -->
-  <div class="navbar__drawer" id="mobile-menu" aria-hidden="true">
+  <!-- Mobile drawer — inert while closed so its links leave the tab order -->
+  <div class="navbar__drawer" id="mobile-menu" inert>
     <nav class="navbar__drawer-nav" aria-label="Mobile navigation">
       <a href="#mission"  class="drawer__link">Mission</a>
       <a href="#pipeline" class="drawer__link">Stack</a>
@@ -156,8 +156,8 @@
     gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
     background: transparent;
-    border: 1px solid var(--border-subtle);
-    border-radius: 6px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
     color: var(--text-muted);
     font-size: 0.8125rem;
     font-weight: 500;
@@ -172,10 +172,12 @@
     }
   }
 
-  .navbar__github:hover {
-    border-color: var(--accent-blue);
-    color: var(--text-primary);
-    background: rgba(61, 142, 248, 0.06);
+  @media (hover: hover) {
+    .navbar__github:hover {
+      border-color: var(--accent-blue);
+      color: var(--text-primary);
+      background: rgba(61, 142, 248, 0.06);
+    }
   }
 
   /* Hamburger */
@@ -191,7 +193,7 @@
     cursor: pointer;
     padding: var(--space-2);
     margin-left: auto;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     transition: background 0.2s;
   }
 
@@ -201,8 +203,11 @@
     }
   }
 
-  .navbar__hamburger:hover {
-    background: var(--border-subtle);
+  /* hover: hover guard prevents the highlight sticking after a tap on touch */
+  @media (hover: hover) {
+    .navbar__hamburger:hover {
+      background: var(--border-subtle);
+    }
   }
 
   .hamburger__bar {
@@ -226,19 +231,23 @@
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  /* Mobile drawer */
+  /* Mobile drawer — fully opaque so hero content does not bleed through;
+     visibility toggles (delayed on close) so it is also hidden from AT */
   .navbar__drawer {
-    background: rgba(10, 16, 32, 0.98);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: var(--bg-alt);
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.35s var(--ease-out);
+    visibility: hidden;
+    transition:
+      max-height 0.35s var(--ease-out),
+      visibility 0s linear 0.35s;
     border-bottom: 1px solid var(--border-subtle);
   }
 
   .navbar__drawer.open {
     max-height: 360px;
+    visibility: visible;
+    transition: max-height 0.35s var(--ease-out);
   }
 
   .navbar__drawer-nav {
@@ -262,8 +271,10 @@
     border-bottom: none;
   }
 
-  .drawer__link:hover {
-    color: var(--text-primary);
+  @media (hover: hover) {
+    .drawer__link:hover {
+      color: var(--text-primary);
+    }
   }
 
   .drawer__link--github {
@@ -279,20 +290,42 @@
     const navbar    = document.getElementById('navbar');
 
     if (hamburger && drawer) {
-      hamburger.addEventListener('click', function () {
-        const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
-        hamburger.setAttribute('aria-expanded', String(!isOpen));
-        drawer.setAttribute('aria-hidden', String(isOpen));
-        drawer.classList.toggle('open', !isOpen);
+      function setOpen(open) {
+        hamburger.setAttribute('aria-expanded', String(open));
+        drawer.classList.toggle('open', open);
+        if (open) drawer.removeAttribute('inert');
+        else drawer.setAttribute('inert', '');
+        // Lock page scroll while the drawer is open
+        document.documentElement.style.overflow = open ? 'hidden' : '';
+      }
+      function isOpen() {
+        return hamburger.getAttribute('aria-expanded') === 'true';
+      }
+
+      hamburger.addEventListener('click', function () { setOpen(!isOpen()); });
+
+      // Close on link tap
+      drawer.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () { setOpen(false); });
       });
 
-      // Close drawer when a link is tapped
-      drawer.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', function () {
-          hamburger.setAttribute('aria-expanded', 'false');
-          drawer.setAttribute('aria-hidden', 'true');
-          drawer.classList.remove('open');
-        });
+      // Close on Escape and return focus to the toggle
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && isOpen()) {
+          setOpen(false);
+          hamburger.focus();
+        }
+      });
+
+      // Close on tap outside the header
+      document.addEventListener('click', function (e) {
+        if (isOpen() && navbar && !navbar.contains(e.target)) setOpen(false);
+      });
+
+      // Close if the viewport grows into the desktop layout
+      const desktop = window.matchMedia('(min-width: 768px)');
+      desktop.addEventListener('change', function (e) {
+        if (e.matches && isOpen()) setOpen(false);
       });
     }
 

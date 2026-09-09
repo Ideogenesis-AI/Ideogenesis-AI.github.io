@@ -93,23 +93,8 @@
     }
   }
 
-  /* Section meta-label */
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent-cyan);
-    margin-bottom: var(--space-4);
-  }
-
-  .section-heading {
-    font-size: clamp(1.875rem, 4vw, 2.75rem);
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.25;
-    color: var(--text-primary);
+  /* .section-label / .section-heading come from global.css */
+  .mission__text .section-heading {
     margin-bottom: var(--space-6);
   }
 
@@ -170,6 +155,7 @@
     gap: var(--space-4);
   }
 
+  /* Pillars are informational, not interactive — no hover state */
   .pillar {
     display: flex;
     align-items: center;
@@ -177,12 +163,7 @@
     padding: var(--space-4) var(--space-5);
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: 10px;
-    transition: border-color 0.2s;
-  }
-
-  .pillar:hover {
-    border-color: rgba(61, 142, 248, 0.3);
+    border-radius: var(--radius-md);
   }
 
   .pillar__icon {
@@ -193,7 +174,7 @@
     align-items: center;
     justify-content: center;
     background: rgba(0, 212, 255, 0.08);
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     color: var(--accent-cyan);
     margin-top: 1px;
   }

@@ -32,6 +32,10 @@ const ogImageUrl = new URL(ogImage, siteBase);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#070b15" />
 
+    <!-- Mark JS availability before first paint so reveal animations
+         only hide content when the observer can reveal it again -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl.href} />
@@ -42,6 +46,9 @@ const ogImageUrl = new URL(ogImage, siteBase);
     <meta property="og:title"       content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image"       content={ogImageUrl.href} />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name"    content="Ideogenesis AI" />
 
     <!-- Twitter / X -->
     <meta name="twitter:card"        content="summary_large_image" />
@@ -83,6 +90,47 @@ const ogImageUrl = new URL(ogImage, siteBase);
         } else {
           observe();
         }
+      })();
+    </script>
+
+    <!-- Shared PyPI version lookup for any [data-pypi="pkg"] element -->
+    <script is:inline>
+      (function () {
+        var CACHE_TTL = 60 * 60 * 1000; // 1 hour
+
+        function read(pkg) {
+          try {
+            var raw = localStorage.getItem('pypi_v_' + pkg);
+            if (!raw) return null;
+            var e = JSON.parse(raw);
+            return Date.now() - e.ts > CACHE_TTL ? null : e.v;
+          } catch (_) { return null; }
+        }
+        function write(pkg, v) {
+          try { localStorage.setItem('pypi_v_' + pkg, JSON.stringify({ v: v, ts: Date.now() })); } catch (_) {}
+        }
+
+        var byPkg = {};
+        document.querySelectorAll('[data-pypi]').forEach(function (el) {
+          var pkg = el.getAttribute('data-pypi');
+          if (!pkg) return;
+          (byPkg[pkg] = byPkg[pkg] || []).push(el);
+        });
+
+        Object.keys(byPkg).forEach(function (pkg) {
+          var apply = function (v) {
+            byPkg[pkg].forEach(function (el) { el.textContent = 'PyPI · v' + v; });
+          };
+          var cached = read(pkg);
+          if (cached) { apply(cached); return; }
+          fetch('https://pypi.org/pypi/' + pkg + '/json')
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (data) {
+              var v = data && data.info && data.info.version;
+              if (v) { write(pkg, v); apply(v); }
+            })
+            .catch(function () { /* keep placeholder */ });
+        });
       })();
     </script>
   </body>

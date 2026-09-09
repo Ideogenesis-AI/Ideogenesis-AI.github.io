@@ -97,7 +97,7 @@
     gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
     border: 1px solid var(--border-subtle);
-    border-radius: 100px;
+    border-radius: var(--radius-pill);
     background: rgba(255, 255, 255, 0.03);
     color: var(--text-muted);
     font-size: 0.75rem;
@@ -127,21 +127,22 @@
     display: inline-block;
   }
 
-  /* Shimmer gradient text */
+  /* Shimmer gradient text — cyan/blue sheen only (no white stop, which read
+     as a flicker), slowed so it feels like light moving rather than blinking */
   .shimmer {
     background: linear-gradient(
       90deg,
       var(--accent-cyan) 0%,
-      var(--accent-blue) 35%,
-      var(--text-primary) 50%,
-      var(--accent-blue) 65%,
+      var(--accent-blue) 40%,
+      #7fdcff 50%,
+      var(--accent-blue) 60%,
       var(--accent-cyan) 100%
     );
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shimmer 4s linear infinite;
+    animation: shimmer 7s linear infinite;
   }
 
   /* Tagline */
@@ -176,12 +177,16 @@
     align-items: center;
     gap: var(--space-2);
     padding: 0.75rem 1.5rem;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-size: 0.9375rem;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    transition: all 0.2s var(--ease-out);
+    transition:
+      background 0.2s var(--ease-out),
+      border-color 0.2s var(--ease-out),
+      color 0.2s var(--ease-out),
+      transform 0.2s var(--ease-out);
     min-height: 44px;
   }
 
@@ -191,23 +196,25 @@
     border: 1px solid var(--accent-cyan);
   }
 
-  .btn--primary:hover {
-    background: #1adbff;
-    color: #060b15;
-    transform: translateY(-2px);
-  }
-
   .btn--secondary {
     background: transparent;
     color: var(--text-primary);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border-strong);
   }
 
-  .btn--secondary:hover {
-    border-color: var(--accent-blue);
-    color: var(--accent-blue);
-    transform: translateY(-2px);
-    background: rgba(61, 142, 248, 0.06);
+  /* Buttons lift on hover; cards do not — keeps the motion language distinct */
+  @media (hover: hover) {
+    .btn--primary:hover {
+      background: #1adbff;
+      color: #060b15;
+      transform: translateY(-2px);
+    }
+    .btn--secondary:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      transform: translateY(-2px);
+      background: rgba(61, 142, 248, 0.06);
+    }
   }
 
   /* Scroll hint */

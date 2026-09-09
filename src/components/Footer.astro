@@ -8,7 +8,8 @@ const links = [
   {
     label: 'Hugging Face',
     href: 'https://huggingface.co/ideogenesis',
-    icon: `<circle cx="12" cy="12" r="10"/><path d="M8.5 14.5s1 1.5 3.5 1.5 3.5-1.5 3.5-1.5" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="9" cy="10" r="1.2" fill="currentColor"/><circle cx="15" cy="10" r="1.2" fill="currentColor"/>`,
+    // Same mark as the Hugging Face strip in AIResearch.astro
+    icon: `<circle cx="12" cy="12" r="9"/><path d="M8.2 14.2c.9 1.5 2.2 2.3 3.8 2.3s2.9-.8 3.8-2.3" stroke-linecap="round"/><circle cx="9" cy="9.8" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="9.8" r="1" fill="currentColor" stroke="none"/>`,
     useStroke: true,
   },
   {
@@ -150,17 +151,15 @@ const links = [
     transition: color 0.2s;
   }
 
-  .footer__link:hover {
-    color: var(--text-primary);
-  }
-
   .footer__link svg {
     flex-shrink: 0;
     opacity: 0.6;
+    transition: opacity 0.2s;
   }
 
-  .footer__link:hover svg {
-    opacity: 1;
+  @media (hover: hover) {
+    .footer__link:hover { color: var(--text-primary); }
+    .footer__link:hover svg { opacity: 1; }
   }
 
   /* Bottom bar */
@@ -171,7 +170,7 @@ const links = [
 
   .footer__bottom p {
     font-size: 0.8125rem;
-    color: var(--text-faint);
+    color: var(--text-subtle);
   }
 
   .footer__bottom a {
@@ -179,7 +178,9 @@ const links = [
     text-decoration: none;
   }
 
-  .footer__bottom a:hover {
-    color: var(--text-primary);
+  @media (hover: hover) {
+    .footer__bottom a:hover {
+      color: var(--text-primary);
+    }
   }
 </style>

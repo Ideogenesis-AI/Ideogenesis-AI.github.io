@@ -23,12 +23,12 @@ const features = [
 
 <section class="research" id="research">
   <div class="container">
-    <div class="research__header reveal">
+    <div class="section-header reveal">
       <div class="section-label section-label--purple">AI Research</div>
       <h2 class="section-heading">
         The Ideogenesis Framework
       </h2>
-      <p class="research__intro">
+      <p class="section-intro">
         Built on top of the technology stack, the Ideogenesis Framework provides a
         comprehensive suite of transformer-based architectures and analysis tools for
         discovering emergent physics from data.
@@ -52,22 +52,22 @@ const features = [
 
     <!-- Strata CLI — full-width highlight card -->
     <div class="strata reveal">
-      <div class="strata__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-        </svg>
-      </div>
-      <div class="strata__body">
+      <div class="strata__lead">
+        <div class="strata__icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+          </svg>
+        </div>
         <div class="strata__header">
           <span class="strata__name">Strata CLI</span>
           <span class="strata__tag">Resource management</span>
         </div>
-        <p class="strata__desc">
-          A Homebrew-inspired resource management system that streamlines handling of datasets,
-          models, and experimental artifacts — with centralized registry management, automatic
-          versioning, and dependency resolution.
-        </p>
       </div>
+      <p class="strata__desc">
+        A Homebrew-inspired resource management system that streamlines handling of datasets,
+        models, and experimental artifacts — with centralized registry management, automatic
+        versioning, and dependency resolution.
+      </p>
       <a
         href="https://github.com/Ideogenesis-AI"
         class="strata__cta"
@@ -78,8 +78,11 @@ const features = [
 
     <!-- HuggingFace resources -->
     <div class="hf-strip reveal">
-      <svg class="hf-strip__icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm-1-11h2v6h-2zm0 8h2v2h-2z"/>
+      <svg class="hf-strip__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M8.2 14.2c.9 1.5 2.2 2.3 3.8 2.3s2.9-.8 3.8-2.3"/>
+        <circle cx="9" cy="9.8" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="15" cy="9.8" r="1" fill="currentColor" stroke="none"/>
       </svg>
       <p>
         Pre-trained models and curated datasets available on
@@ -96,29 +99,14 @@ const features = [
     padding-block: var(--space-10);
   }
 
-  .research__header {
-    max-width: 620px;
-    margin-bottom: var(--space-9);
-  }
-
-  .research__intro {
-    font-size: clamp(0.9375rem, 1.5vw, 1.05rem);
-    color: var(--text-muted);
-    line-height: 1.7;
-    margin-top: var(--space-4);
-  }
-
-  /* Purple label variant */
-  .section-label--purple {
-    color: var(--accent-purple);
-  }
+  /* Section header classes come from global.css */
 
   /* Feature grid */
   .research__grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-4);
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
   }
 
   @media (min-width: 768px) {
@@ -127,18 +115,13 @@ const features = [
     }
   }
 
+  /* Feature cards are descriptive, not links — no hover state */
   .research__card {
     position: relative;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    transition: border-color 0.25s var(--ease-out), background 0.25s;
-  }
-
-  .research__card:hover {
-    border-color: rgba(139, 92, 246, 0.4);
-    background: var(--bg-surface-hover);
   }
 
   .card__accent {
@@ -147,7 +130,7 @@ const features = [
   }
 
   .card__body {
-    padding: var(--space-5) var(--space-5) var(--space-6);
+    padding: var(--card-pad);
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
@@ -172,7 +155,7 @@ const features = [
     font-weight: 500;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-subtle);
   }
 
   .card__desc {
@@ -181,22 +164,24 @@ const features = [
     line-height: 1.65;
   }
 
-  /* Strata CLI full-width card */
+  /* Strata CLI full-width card.
+     Mobile: stacked (lead row, description, CTA).
+     Desktop: icon | header + description | CTA in one row. */
   .strata {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-5);
-    padding: var(--space-5) var(--space-6);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    padding: var(--card-pad);
     background: var(--bg-surface);
-    border: 1px solid rgba(139, 92, 246, 0.15);
-    border-radius: 12px;
-    margin-bottom: var(--space-5);
-    transition: border-color 0.2s;
-    flex-wrap: wrap;
+    border: 1px solid var(--border-purple);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-4);
   }
 
-  .strata:hover {
-    border-color: rgba(139, 92, 246, 0.4);
+  .strata__lead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
   }
 
   .strata__icon {
@@ -206,24 +191,38 @@ const features = [
     align-items: center;
     justify-content: center;
     background: rgba(139, 92, 246, 0.1);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     color: var(--accent-purple);
     flex-shrink: 0;
   }
 
-  .strata__body {
-    flex: 1;
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
   .strata__header {
     display: flex;
-    align-items: baseline;
-    gap: var(--space-3);
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .strata {
+      grid-template-columns: 44px 1fr auto;
+      grid-template-areas:
+        'icon header cta'
+        'icon desc   cta';
+      column-gap: var(--space-5);
+      row-gap: var(--space-2);
+      align-items: center;
+      padding: var(--card-pad) var(--space-6);
+    }
+    .strata__lead { display: contents; }
+    .strata__icon { grid-area: icon; align-self: start; }
+    .strata__header {
+      grid-area: header;
+      flex-direction: row;
+      align-items: baseline;
+      gap: var(--space-3);
+    }
+    .strata__desc { grid-area: desc; }
+    .strata__cta { grid-area: cta; }
   }
 
   .strata__name {
@@ -238,7 +237,7 @@ const features = [
     font-weight: 500;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-subtle);
   }
 
   .strata__desc {
@@ -248,10 +247,10 @@ const features = [
   }
 
   .strata__cta {
-    align-self: center;
+    justify-self: start;
     padding: var(--space-2) var(--space-4);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    border-radius: 6px;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: var(--radius-sm);
     font-size: 0.8125rem;
     font-weight: 600;
     color: #c4b5fd;
@@ -259,14 +258,16 @@ const features = [
     white-space: nowrap;
     transition: border-color 0.2s, background 0.2s;
     min-height: 44px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
   }
 
-  .strata__cta:hover {
-    border-color: var(--accent-purple);
-    background: rgba(139, 92, 246, 0.1);
-    color: #c4b5fd;
+  @media (hover: hover) {
+    .strata__cta:hover {
+      border-color: var(--accent-purple);
+      background: rgba(139, 92, 246, 0.1);
+      color: #c4b5fd;
+    }
   }
 
   /* HuggingFace strip */
@@ -274,15 +275,15 @@ const features = [
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-4) var(--card-pad);
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-subtle);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
   }
 
   .hf-strip__icon {
     flex-shrink: 0;
-    color: var(--text-muted);
+    color: var(--text-subtle);
   }
 
   .hf-strip p {
