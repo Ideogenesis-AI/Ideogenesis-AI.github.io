@@ -260,8 +260,13 @@
     var dpr = window.devicePixelRatio || 1;
     var raf = null;
 
-    var COLS = 18;
-    var ROWS = 12;
+    // Square lattice with a fixed spacing in CSS px. The number of columns
+    // and rows is derived from the canvas size, so cells stay square and the
+    // same size at every viewport; the grid is centred in the canvas.
+    var SPACING = 72;
+    var MIN_PAD = 24;
+    var COLS = 0;
+    var ROWS = 0;
     var MAX_PARTICLES = 28;
     var MAX_GEN = 3;
     // Split probability per generation
@@ -276,13 +281,15 @@
     // ── Lattice ─────────────────────────────────────────────
     function buildLattice(w, h) {
       nodes = []; nodeGlow = []; particles = [];
-      var padX = w * 0.05, padY = h * 0.10;
-      var sx = (w - padX * 2) / (COLS - 1);
-      var sy = (h - padY * 2) / (ROWS - 1);
+      COLS = Math.max(1, Math.floor((w - MIN_PAD * 2) / SPACING) + 1);
+      ROWS = Math.max(1, Math.floor((h - MIN_PAD * 2) / SPACING) + 1);
+      // Centre the grid so the leftover margin is split evenly on each side
+      var offX = (w - (COLS - 1) * SPACING) / 2;
+      var offY = (h - (ROWS - 1) * SPACING) / 2;
       for (var r = 0; r < ROWS; r++) {
         for (var c = 0; c < COLS; c++) {
           nodes.push({
-            x: padX + c * sx, y: padY + r * sy,
+            x: offX + c * SPACING, y: offY + r * SPACING,
             phase: Math.random() * Math.PI * 2,
             speed: 0.008 + Math.random() * 0.012,
             amp:   0.3   + Math.random() * 0.5,
@@ -311,7 +318,7 @@
     // ── Particle update ──────────────────────────────────────
     function update(t, dt) {
       // Auto-emit
-      if (t >= nextSpawn && particles.length < MAX_PARTICLES - 2) {
+      if (t >= nextSpawn && particles.length < MAX_PARTICLES - 2 && COLS >= 3 && ROWS >= 3) {
         var idx = COLS + 1 + Math.floor(Math.random() * ((ROWS - 2) * COLS - 2));
         var nb = neighbors(idx, null);
         if (nb.length) spawn(idx, nb[Math.floor(Math.random() * nb.length)], 0);
